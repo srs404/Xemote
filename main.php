@@ -1,7 +1,9 @@
 <?php
 
-require_once("App/Model/Database.php");
+require_once("assets/App/Model/Database.php");
 
+$dbObject = new Database();
+$dbObject->connect();
 
 ?>
 
