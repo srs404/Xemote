@@ -15,11 +15,13 @@ class Database
             $conn = new PDO("mysql:host=" . $this->credentials['server'] . ";dbname=" . $this->credentials['dbname'], $this->credentials['username'], $this->credentials['password']);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Connected successfully";
+            // echo "Connected successfully";
         } catch (PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
         }
     }
+
+    // For Publicly Calling Connection
     public function connect()
     {
         $this->connection();
