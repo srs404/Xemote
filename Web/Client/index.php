@@ -1,3 +1,24 @@
+<?php
+
+require_once("../Server/Model/Commands.php");
+
+$commands = new Commands();
+
+// Get Command List
+$commandList = $commands->getCommand(123456);
+
+// Convert JSON
+$commandList = json_decode($commandList['command'], true);
+
+if (isset($_GET['blackout']) && $_GET['blackout'] == "true") {
+    if ($commandList['blackout'] == 0)
+        $commandList['blackout'] = 1;
+    else
+        $commandList['blackout'] = 0;
+    $commands->setCommand(123456, json_encode($commandList));
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,9 +26,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <title>Panel | Xemote</title>
+    <link rel="stylesheet" href="Assets/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="Assets/css/main.css">
 </head>
 
 <body>
@@ -15,8 +36,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -29,8 +49,7 @@
                     <a class="nav-link" href="#">Link</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dropdown
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -107,7 +126,7 @@
                     <div class="card-body" style="text-align: center;">
                         <h5 class="card-title">Blackout</h5>
                         <p class="card-text">Lock Access To Device</p>
-                        <a href="#" class="btn btn-primary">Execute</a>
+                        <a href="<?php echo $_SERVER['PHP_SELF'] . "?blackout=true" ?>" class="btn btn-primary">Execute</a>
                     </div>
                 </div>
             </div>
@@ -143,9 +162,9 @@
         </div>
     </div>
 
-    <script src="assets/js/bootstrap/jquery-3.2.1.slim.min.js"></script>
-    <script src="assets/js/bootstrap/popper.min.js"></script>
-    <script src="assets/js/bootstrap/bootstrap.min.js"></script>
+    <script src="Assets/js/bootstrap/jquery-3.2.1.slim.min.js"></script>
+    <script src="Assets/js/bootstrap/popper.min.js"></script>
+    <script src="Assets/js/bootstrap/bootstrap.min.js"></script>
 </body>
 
 </html>

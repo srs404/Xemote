@@ -6,13 +6,11 @@ import json
 import subprocess
 import cv2
 import pyautogui
-import keyboard
 import pynput
 import ctypes
 
 # Class: Xemote
 import time
-import platform
 import uuid
 import threading
 
@@ -20,11 +18,11 @@ import threading
 ====================================================================================================
 # Title: Database (Class)
 # ~ Description: Store Database Operations For Xemote
-@methods: 
-    - __connect
-    - __disconnect
+@methods:
     - put
     - get
+    - __connect
+    - __disconnect
     - __del__
 @dependencies:
     - mysql.connector
@@ -164,8 +162,9 @@ class Database:
 ====================================================================================================
 # Title: Arsenal (Class)
 # ~ Description: Store Main Functions For Xemote
-@methods: 
+@methods:
     - webcam
+    - blackout
     - screenshot
     - device_shutdown_state
     - __del__
@@ -174,6 +173,8 @@ class Database:
     - subprocess
     - cv2
     - pyautogui
+    - pynput
+    - ctypes
 @usage:
     obj = Arsenal()
     obj.webcam()
