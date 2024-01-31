@@ -11,6 +11,7 @@ import pyautogui
 import time
 import platform
 import uuid
+import threading
 
 class Database:
     # Constructor
@@ -25,7 +26,7 @@ class Database:
         # User Command Controller Dictionary
         self.user = {
             'userID': '123456',
-            'status': False,
+            'active': False,
             'command': {
                 'shutdown': 3, # 0: No Command, 1: Shutdown, 2: Reboot, 3: Logoff
                 'webcam': 0,
@@ -103,13 +104,16 @@ class Database:
     @return: True if successful, False otherwise
     '''
 
-    def get(self):
+    def get(self, option="command"):
         try:
             if not self.user['db']['connection'].is_connected():
                 self.__connect()
 
             # Use a parameterized query to safely retrieve data from the database
-            sql = "SELECT command FROM command_center WHERE user_id = %s"
+            if option == "uuid":
+                sql = "SELECT uuid FROM command_center WHERE user_id = %s"
+            else:
+                sql = "SELECT command FROM command_center WHERE user_id = %s"
             values = (123456,)
 
             self.user['db']['cursor'].execute(sql, values)
@@ -118,9 +122,11 @@ class Database:
             self.__disconnect()
 
             # Check if any result was fetched
-            if result:
+            if result and option == "command":
                 # Convert the JSON string to a Python dictionary
                 return json.loads(result[0])
+            elif result and option == "uuid":
+                return result[0]
             else:
                 print("No data found")
                 return None
@@ -219,7 +225,7 @@ class Xemote(Arsenal):
     Title Assign Server Command
     ~ Description: Python MySQL Get Data & Assign Commands From Server
     '''
-    def assign_server_command(self):
+    def __assign_server_command(self):
         while True:
             # Get Realtime Database Connection
             command_dict = self.get()
@@ -293,9 +299,42 @@ class Xemote(Arsenal):
                     print("Shutdown")
 
             time.sleep(2)
+
+    '''
+    Title: Main Driver
+    ~ Description: Main Driver For Xemote
+    '''
+    def execute(self):
+        if self.validate():
+            # Create a thread for checking and updating commands
+            commands_thread = threading.Thread(target=self.__assign_server_command)
+            commands_thread.daemon = True
+            commands_thread.start()
+
+            # Example: Run a loop to print some messages
+            while True:
+                print("Main program is running...")
+                time.sleep(1)
+
+        else:
+            print("Invalid license. Please contact the developer.")
+            exit()
+
+    def validate(self):
+        uuid_db = self.get("uuid")
+        uuid_generated = self.get_uuid()
+        if uuid_db == uuid_generated:
+            self.user['active'] = True
+            return True
+        else:
+            self.user['active'] = False
+            return False
+
+
     def __del__(self):
         super().__del__()  # Call the parent class's __del__ method for cleanup
 
-# Cannot run this file directly
-if __name__ == "__main__":
-    print("This file is not meant to be run directly")
+# Main Driver
+obj = Xemote()
+
+obj.execute()
