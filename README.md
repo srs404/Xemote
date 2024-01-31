@@ -37,3 +37,20 @@ Xemote Remote Control or XRC was a concept project I came up with during my high
 <br> [![Bootstrap](https://img.shields.io/badge/bootstrap-purple.svg?logo=bootstrap&logoColor=white&style=flat-square)](#) [![SweetAlert](https://img.shields.io/badge/Sweet-Alert-red.svg?style=flat-square)](#)
 - Database:
 <br> [![mySQL](https://img.shields.io/badge/mySQL-blue.svg?logo=mysql&logoColor=white&style=flat-square)](#)
+
+# All Rights Reserved
+
+The source code and other content in this repository are proprietary and confidential. No part of this repository may be reproduced, distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic or mechanical methods, without the prior written permission of the code owners:
+
+- Md Samiur Rahman Mian
+  - Socials: 
+    - Facebook: https://www.facebook.com/srs404 
+    - LinkedIn: https://www.github.com/in/srs404
+  - Email: mail@srs404.com
+  - Website: https://srs404.com
+
+This repository is intended for your personal or company use only. that others should not use it without owner's permission. It is not intended for public use or collaboration.
+
+Unauthorized use, reproduction, or distribution of the content in this repository may be subject to legal action and penalties.
+
+For inquiries or permissions, please contact the code owners listed above.
