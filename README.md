@@ -31,9 +31,11 @@ Xemote Remote Control or XRC was a concept project I came up with during my high
 ## Languages:
 - Software:
 <br> [![Python](https://img.shields.io/badge/Python-silver.svg?logo=python&style=flat-square)](#)
+  - Libraries: 
+<br> [![mysql.connector](https://img.shields.io/badge/mysql.connector-teal.svg?style=flat-square)](#) [![JSON](https://img.shields.io/badge/json-teal.svg?style=flat-square)](#) [![subprocess](https://img.shields.io/badge/subprocess-teal.svg?style=flat-square)](#) [![cv2](https://img.shields.io/badge/cv2-teal.svg?style=flat-square)](#) [![pyautogui](https://img.shields.io/badge/pyautogui-teal.svg?style=flat-square)](#) [![pynput](https://img.shields.io/badge/pynput-teal.svg?style=flat-square)](#) [![ctypes](https://img.shields.io/badge/ctypes-teal.svg?style=flat-square)](#) [![time](https://img.shields.io/badge/time-teal.svg?style=flat-square)](#) [![uuid](https://img.shields.io/badge/uuid-teal.svg?style=flat-square)](#) [![threading](https://img.shields.io/badge/threading-teal.svg?style=flat-square)](#) [![pyuac](https://img.shields.io/badge/pyuac-teal.svg?style=flat-square)](#)
 - Website:
 <br> [![HTML](https://img.shields.io/badge/HTML-silver.svg?logo=html5&style=flat-square)](#) [![CSS](https://img.shields.io/badge/CSS-blue.svg?logo=css3&style=flat-square)](#) [![JS](https://img.shields.io/badge/JavaScript-yellow.svg?logo=javascript&logoColor=white&style=flat-square)](#) [![PHP](https://img.shields.io/badge/PHP-blue.svg?logo=php&logoColor=white&style=flat-square)](#) [![jQuery](https://img.shields.io/badge/jQuery-yellow.svg?logo=jquery&logoColor=white&style=flat-square)](#)
-- Tools & Frameworks:
+  - Tools & Frameworks:
 <br> [![Bootstrap](https://img.shields.io/badge/bootstrap-purple.svg?logo=bootstrap&logoColor=white&style=flat-square)](#) [![SweetAlert](https://img.shields.io/badge/Sweet-Alert-red.svg?style=flat-square)](#)
 - Database:
 <br> [![mySQL](https://img.shields.io/badge/mySQL-blue.svg?logo=mysql&logoColor=white&style=flat-square)](#)
