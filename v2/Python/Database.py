@@ -100,7 +100,6 @@ class Database:
     def __disconnect(self):
         self.user['db']['cursor'].close()
         self.user['db']['connection'].close()
-        print("Database connection closed")
 
     '''
     Title: Python MySQL Update Data
@@ -167,9 +166,7 @@ class Database:
 
     # Destructor
     def __del__(self):
-        self.user['db']['cursor'].close()
-        self.user['db']['connection'].close()
-        print("Database connection closed")
+        self.__disconnect()
 
 '''
 ====================================================================================================
@@ -308,29 +305,30 @@ class Xemote(Arsenal):
     def __init__(self):
         super().__init__()
 
-    '''
-    Title: Get Device UUID
-    '''
-    def get_system_uuid(self):
-        try:
-            # Get the system's UUID (Universally Unique Identifier)
-            system_uuid = platform.system_alias(platform.system(), platform.release(), platform.version())
-            return system_uuid
-        except AttributeError:
-            print("UUID not available on this system.")
-            return None
-
     def get_uuid(self):
-        return str(uuid.uuid4())
+        try:
+            # Run the shell command and capture the output
+            output = subprocess.check_output(["wmic", "csproduct", "get", "uuid"], universal_newlines=True)
+        
+            # Split the output into lines and get the second line (which contains the UUID)
+            lines = output.strip().split('\n')
+            uuid_line = lines[2].strip()
+        
+            # Extract and return the UUID from the line
+            uuid = uuid_line.strip()
+            return uuid
+        except Exception as e:
+            print("Error:", str(e))
+            return None
 
     '''
     Title Assign Server Command
     ~ Description: Python MySQL Get Data & Assign Commands From Server
     '''
     def __assign_server_command(self):
-        while True:
+        while self.user['active'] == True:
             # Get Realtime Database Connection
-            command_dict = self.get()
+            command_dict = self.get("command")
 
             # Check Webcam Command State
             # 0: No Command, 1: Capture Image
@@ -407,24 +405,24 @@ class Xemote(Arsenal):
     ~ Description: Main Driver For Xemote
     '''
     def execute(self):
-        if self.validate():
-            # Create a thread for checking and updating commands
-            commands_thread = threading.Thread(target=self.__assign_server_command)
-            commands_thread.daemon = True
-            commands_thread.start()
+        # Create a thread for checking and updating commands
+        commands_thread = threading.Thread(target=self.__assign_server_command)
+        commands_thread.daemon = True
+        commands_thread.start()
 
-            # Example: Run a loop to print some messages
-            while True:
-                print("Main program is running...")
+        while True:
+            if self.validate():
+                print("Running...")
                 time.sleep(1)
+            else:
+                print("Invalid license. Please contact the developer.")
+                exit()
 
-        else:
-            print("Invalid license. Please contact the developer.")
-            exit()
 
     def validate(self):
         uuid_db = self.get("uuid")
         uuid_generated = self.get_uuid()
+
         if uuid_db == uuid_generated:
             self.user['active'] = True
             return True
