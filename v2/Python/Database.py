@@ -13,6 +13,36 @@ import platform
 import uuid
 import threading
 
+'''
+====================================================================================================
+# Title: Database (Class)
+# ~ Description: Store Database Operations For Xemote
+@methods: 
+    - __connect
+    - __disconnect
+    - put
+    - get
+    - __del__
+@dependencies:
+    - mysql.connector
+    - json
+@usage:
+    obj = Database()
+    obj.put()
+    obj.get()
+@notes:
+    - This class is a collection of database operations for Xemote.
+    - It uses the mysql.connector module for database operations.
+    - It uses the json module for JSON operations.
+    - It uses the put and get methods to update and retrieve data from the database.
+    - It uses the __connect and __disconnect methods to connect and disconnect from the database.
+    - It uses the __del__ method to perform cleanup.
+@status: Completed
+@version: 1.0
+@date: 2021-09-30
+@developer: Sami Rahman (srs404)
+====================================================================================================
+'''
 class Database:
     # Constructor
     def __init__(self):
@@ -141,6 +171,47 @@ class Database:
         self.user['db']['connection'].close()
         print("Database connection closed")
 
+'''
+====================================================================================================
+# Title: Arsenal (Class)
+# ~ Description: Store Main Functions For Xemote
+@methods: 
+    - webcam
+    - screenshot
+    - device_shutdown_state
+    - __del__
+@dependencies:
+    - Database
+    - subprocess
+    - cv2
+    - pyautogui
+@usage:
+    obj = Arsenal()
+    obj.webcam()
+    obj.screenshot()
+    obj.device_shutdown_state(1)
+@notes:
+    - This class is a collection of main functions for Xemote.
+    - It inherits from the Database class.
+    - It uses the subprocess module for system commands.
+    - It uses the cv2 module for webcam operations.
+    - It uses the pyautogui module for screenshot operations.
+@TODO:
+    - Implement the device_shutdown_state method to handle the shutdown, reboot, and logoff commands.
+    - Implement the webcam method to capture an image from the webcam.
+    - Implement the screenshot method to capture a screenshot of the screen.
+    - Implement the __del__ method to perform cleanup.
+@status: Ongoing
+@version: 1.0
+@date: 2021-09-30
+@developer: Sami Rahman (srs404)
+@license: MIT (https://opensource.org/licenses/MIT)
+@contact:
+    - Email: mail@srs404.com
+    - Website: https://srs404.com
+    - GitHub: https://github.com/srs404
+====================================================================================================
+'''
 class Arsenal(Database):
     def __init__(self):
         super().__init__()
@@ -202,6 +273,37 @@ class Arsenal(Database):
     def __del__(self):
         super().__del__()  # Call the parent class's __del__ method for cleanup
 
+''' 
+====================================================================================================
+# Title: Xemote (Class)
+# ~ Description: Main Class For Xemote
+@methods: 
+    - get_system_uuid
+    - get_uuid
+    - __assign_server_command
+    - execute
+    - validate
+    - __del__
+@dependencies:
+    - Database
+    - Arsenal
+    - time
+    - platform
+    - uuid
+    - threading
+@usage:
+    obj = Xemote()
+    obj.execute()
+@notes:
+    - This class is the main driver for Xemote.
+    - It inherits from the Arsenal class.
+    - It uses threading to run a separate thread for checking and updating commands.
+    - It uses the platform and uuid modules to get the system's UUID.
+    - It uses the time module for sleep.
+    - It uses the threading module for creating a separate thread.
+    - It uses the Database and Arsenal classes for database and system operations.
+==================================================================================================== 
+'''
 class Xemote(Arsenal):
     def __init__(self):
         super().__init__()
@@ -330,11 +432,19 @@ class Xemote(Arsenal):
             self.user['active'] = False
             return False
 
-
+    '''
+    Title: Destructor
+    ~ Description: Call Parent Destructor
+    '''
     def __del__(self):
         super().__del__()  # Call the parent class's __del__ method for cleanup
 
+''' 
+====================================================================================================
 # Main Driver
+# ~ Description: Main Driver For Xemote
+# ====================================================================================================
+'''
 obj = Xemote()
 
 obj.execute()
