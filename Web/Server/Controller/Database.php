@@ -60,6 +60,11 @@ class Database
         return $this->connect();
     }
 
+    public function redirect($url)
+    {
+        header("Location: $url");
+    }
+
     function __destruct()
     {
         $this->conn = null;

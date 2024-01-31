@@ -10,12 +10,60 @@ $commandList = $commands->getCommand(123456);
 // Convert JSON
 $commandList = json_decode($commandList['command'], true);
 
-if (isset($_GET['blackout']) && $_GET['blackout'] == "true") {
-    if ($commandList['blackout'] == 0)
+if (isset($_GET['blackout'])) {
+    if ($_GET['blackout'] == "lock") {
         $commandList['blackout'] = 1;
-    else
-        $commandList['blackout'] = 0;
-    $commands->setCommand(123456, json_encode($commandList));
+        $commands->setCommand(123456, json_encode($commandList));
+    } else if ($_GET['blackout'] == "unlock") {
+        $commandList['blackout'] = 2;
+        $commands->setCommand(123456, json_encode($commandList));
+    }
+    $commands->redirect($_SERVER['PHP_SELF']);
+} else if (isset($_GET['webcam'])) {
+    if ($_GET['webcam'] == "true") {
+        $commandList['webcam'] = 1;
+        $commands->setCommand(123456, json_encode($commandList));
+    } else if ($_GET['webcam'] == "false") {
+        $commandList['webcam'] = 0;
+        $commands->setCommand(123456, json_encode($commandList));
+    }
+    $commands->redirect($_SERVER['PHP_SELF']);
+} else if (isset($_GET['screenshot'])) {
+    if ($_GET['screenshot'] == "false") {
+        $commandList['screenshot'] = 0;
+        $commands->setCommand(123456, json_encode($commandList));
+    } else if ($_GET['screenshot'] == "true") {
+        $commandList['screenshot'] = 1;
+        $commands->setCommand(123456, json_encode($commandList));
+    }
+    $commands->redirect($_SERVER['PHP_SELF']);
+} else if (isset($_GET['shutdown'])) {
+    if ($_GET['shutdown'] == "false") {
+        $commandList['shutdown'] = 0;
+        $commands->setCommand(123456, json_encode($commandList));
+    } else if ($_GET['shutdown'] == "true") {
+        $commandList['shutdown'] = 1;
+        $commands->setCommand(123456, json_encode($commandList));
+    }
+    $commands->redirect($_SERVER['PHP_SELF']);
+} else if (isset($_GET['restart'])) {
+    if ($_GET['restart'] == "false") {
+        $commandList['shutdown'] = 0;
+        $commands->setCommand(123456, json_encode($commandList));
+    } else if ($_GET['restart'] == "true") {
+        $commandList['shutdown'] = 2;
+        $commands->setCommand(123456, json_encode($commandList));
+    }
+    $commands->redirect($_SERVER['PHP_SELF']);
+} else if (isset($_GET['signout'])) {
+    if ($_GET['signout'] == "false") {
+        $commandList['shutdown'] = 0;
+        $commands->setCommand(123456, json_encode($commandList));
+    } else if ($_GET['signout'] == "true") {
+        $commandList['shutdown'] = 3;
+        $commands->setCommand(123456, json_encode($commandList));
+    }
+    $commands->redirect($_SERVER['PHP_SELF']);
 }
 ?>
 
@@ -78,7 +126,7 @@ if (isset($_GET['blackout']) && $_GET['blackout'] == "true") {
                     <div class="card-body" style="text-align: center;">
                         <h5 class="card-title">Shutdown Computer</h5>
                         <p class="card-text">Turn Off Your Device</p>
-                        <a href="#" class="btn btn-primary">Execute</a>
+                        <button onclick="shutdown('shutdown')" class="btn btn-primary">Execute</button>
                     </div>
                 </div>
             </div>
@@ -87,7 +135,7 @@ if (isset($_GET['blackout']) && $_GET['blackout'] == "true") {
                     <div class="card-body" style="text-align: center;">
                         <h5 class="card-title">Restart Computer</h5>
                         <p class="card-text">Restart Your Device</p>
-                        <a href="#" class="btn btn-primary">Execute</a>
+                        <button onclick="shutdown('restart')" class="btn btn-primary">Execute</button>
                     </div>
                 </div>
             </div>
@@ -96,7 +144,7 @@ if (isset($_GET['blackout']) && $_GET['blackout'] == "true") {
                     <div class="card-body" style="text-align: center;">
                         <h5 class="card-title">Sign Out</h5>
                         <p class="card-text">Sign Out From Your Device</p>
-                        <a href="#" class="btn btn-primary">Execute</a>
+                        <button onclick="shutdown('signout')" class="btn btn-primary">Execute</button>
                     </div>
                 </div>
             </div>
@@ -108,7 +156,7 @@ if (isset($_GET['blackout']) && $_GET['blackout'] == "true") {
                     <div class="card-body" style="text-align: center;">
                         <h5 class="card-title">Webcam</h5>
                         <p class="card-text">Capture Image Using Webcam</p>
-                        <a href="#" class="btn btn-primary">Execute</a>
+                        <button onclick="webcam()" class="btn btn-primary">Execute</button>
                     </div>
                 </div>
             </div>
@@ -117,7 +165,7 @@ if (isset($_GET['blackout']) && $_GET['blackout'] == "true") {
                     <div class="card-body" style="text-align: center;">
                         <h5 class="card-title">Screenshot</h5>
                         <p class="card-text">Capture Screenshot of Current State</p>
-                        <a href="#" class="btn btn-primary">Execute</a>
+                        <button onclick="screenshot()" class="btn btn-primary">Execute</button>
                     </div>
                 </div>
             </div>
@@ -126,7 +174,7 @@ if (isset($_GET['blackout']) && $_GET['blackout'] == "true") {
                     <div class="card-body" style="text-align: center;">
                         <h5 class="card-title">Blackout</h5>
                         <p class="card-text">Lock Access To Device</p>
-                        <a href="<?php echo $_SERVER['PHP_SELF'] . "?blackout=true" ?>" class="btn btn-primary">Execute</a>
+                        <button onclick="blackout()" class="btn btn-primary">Execute</button>
                     </div>
                 </div>
             </div>
@@ -137,7 +185,7 @@ if (isset($_GET['blackout']) && $_GET['blackout'] == "true") {
                     <div class="card-body" style="text-align: center;">
                         <h5 class="card-title">Showoff</h5>
                         <p class="card-text">Cool Device Effect To Show Off</p>
-                        <a href="#" class="btn btn-primary">Execute</a>
+                        <button onclick="" class="btn btn-primary">Execute</button>
                     </div>
                 </div>
             </div>
@@ -165,6 +213,239 @@ if (isset($_GET['blackout']) && $_GET['blackout'] == "true") {
     <script src="Assets/js/bootstrap/jquery-3.2.1.slim.min.js"></script>
     <script src="Assets/js/bootstrap/popper.min.js"></script>
     <script src="Assets/js/bootstrap/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function blackout() {
+            swal({
+                title: "Are you sure?",
+                text: "Once blacked out, you will not be able to turn on your device remotely",
+                icon: "info",
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+                buttons: {
+                    cancel: {
+                        text: "Cancel",
+                        value: "cancel",
+                        visible: true,
+                        closeModal: true,
+                    },
+                    unlock: {
+                        text: "Unfreeze",
+                        value: "unlock",
+                        visible: true,
+                    },
+                    lock: {
+                        text: "Initialize",
+                        value: "blackout",
+                    },
+                },
+            }).then((value) => {
+                if (value == "blackout") {
+                    swal("Initialized Blackout!", {
+                        icon: "success",
+                        timer: 1200,
+                        button: false,
+                    }).then(() => {
+                        window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?blackout=lock" ?>";
+                    });
+                } else if (value == "unlock") {
+                    swal("Unlocking Your Device!", {
+                        icon: "success",
+                        timer: 1000,
+                        button: false,
+                    }).then(() => {
+                        window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?blackout=unlock" ?>";
+                    });
+                } else if (value == "cancel") {
+                    swal(modalclose = true);
+                }
+            });
+        }
+
+        function webcam() {
+            swal({
+                title: "Are you sure?",
+                text: "Once executed, you will be able to see the image captured from your device",
+                icon: "info",
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+                buttons: {
+                    cancel: {
+                        text: "Remove Previous",
+                        value: "cancel",
+                        visible: true,
+                    },
+                    execute: {
+                        text: "Execute",
+                        value: "execute",
+                    },
+                },
+            }).then((value) => {
+                if (value == "execute") {
+                    swal("Capturing Image!", {
+                        icon: "success",
+                        timer: 1200,
+                        button: false,
+                    }).then(() => {
+                        window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?webcam=true" ?>";
+                    });
+                } else if (value == "cancel") {
+                    swal("Cleared Command", {
+                        icon: "success",
+                        timer: 1000,
+                        button: false,
+                    }).then(() => {
+                        window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?webcam=false" ?>";
+                    });
+                }
+            });
+        }
+
+        function screenshot() {
+            swal({
+                title: "Are you sure?",
+                text: "Once executed, you will be able to see the screenshot captured from your device",
+                icon: "info",
+                closeOnClickOutside: false,
+                closeOnEsc: false,
+                buttons: {
+                    cancel: {
+                        text: "Remove Previous",
+                        value: "cancel",
+                        visible: true,
+                    },
+                    execute: {
+                        text: "Execute",
+                        value: "execute",
+                    },
+                },
+            }).then((value) => {
+                if (value == "execute") {
+                    swal("Capturing Screenshot!", {
+                        icon: "success",
+                        timer: 1200,
+                        button: false,
+                    }).then(() => {
+                        window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?screenshot=true" ?>";
+                    });
+                } else if (value == "cancel") {
+                    swal("Cleared Command!", {
+                        icon: "success",
+                        timer: 1000,
+                        button: false,
+                    }).then(() => {
+                        window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?screenshot=false" ?>";
+                    });
+                }
+            });
+        }
+
+        /**
+         * Title: Shutdown
+         * ~ Description: Shutdown, Restart, Signout
+         * @param {string} option
+         * @returns {void}
+         */
+        function shutdown(option) {
+            if (option == "shutdown") {
+                swal({
+                        title: "Are you sure? [Shutdown]",
+                        text: "Once shutdown, you will not be able to turn on your device remotely",
+                        icon: "warning",
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                        buttons: {
+                            cancel: {
+                                text: "Remove Previous",
+                                value: "cancel",
+                                visible: true,
+                            },
+                            execute: {
+                                text: "Execute",
+                                value: "execute",
+                            },
+                        },
+                    })
+                    .then((value) => {
+                        if (value == "execute") {
+                            window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?shutdown=true" ?>";
+                        } else if (value == "cancel") {
+                            swal("Cleared Command!", {
+                                icon: "success",
+                                timer: 1000,
+                                button: false,
+                            }).then(() => {
+                                window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?shutdown=false" ?>";
+                            });
+                        }
+                    });
+            } else if (option == "restart") {
+                swal({
+                        title: "Are you sure? [Restart]",
+                        text: "Once restarted, you will not be able to turn on your device remotely",
+                        icon: "warning",
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                        buttons: {
+                            cancel: {
+                                text: "Remove Previous",
+                                value: "cancel",
+                                visible: true,
+                            },
+                            execute: {
+                                text: "Execute",
+                                value: "execute",
+                            },
+                        },
+                    })
+                    .then((value) => {
+                        if (value == "execute") {
+                            window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?restart=true" ?>";
+                        } else if (value == "cancel") {
+                            swal("Cleared Command!", {
+                                icon: "success",
+                                timer: 1000,
+                                button: false,
+                            }).then(() => {
+                                window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?restart=false" ?>";
+                            });
+                        }
+                    });
+            } else if (option == "signout") {
+                swal({
+                        title: "Are you sure? [Log Off]",
+                        text: "Once signed out, you will not be able to turn on your device remotely",
+                        icon: "warning",
+                        closeOnClickOutside: false,
+                        closeOnEsc: false,
+                        buttons: {
+                            cancel: {
+                                text: "Remove Previous",
+                                value: "cancel",
+                                visible: true,
+                            },
+                            execute: {
+                                text: "Execute",
+                                value: "execute",
+                            },
+                        },
+                    })
+                    .then((value) => {
+                        if (value) {
+                            window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?signout=true" ?>";
+                        } else if (value == "cancel") {
+                            swal("Cleared Command!", {
+                                icon: "success",
+                                timer: 1000,
+                                button: false,
+                            }).then(() => {
+                                window.location.href = "<?php echo $_SERVER['PHP_SELF'] . "?signout=false" ?>";
+                            });
+                        }
+                    });
+            }
+        }
+    </script>
 </body>
 
 </html>
