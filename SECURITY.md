@@ -9,7 +9,7 @@ The source code and other content in this repository are proprietary and confide
 Unauthorized use, reproduction, or distribution of the content in this repository may be subject to legal action and penalties.
 
 ## Intended Use
-This repository is intended for reference and demonstration purposes only. It is not intended for public use, collaboration, or redistribution.
+This repository is intended for your personal or company use only. that others should not use it without owner's permission. It is not intended for public use, collaboration, or redistribution.
 
 ## Contact
 For inquiries, permissions, or collaboration requests, please contact the code owners:
