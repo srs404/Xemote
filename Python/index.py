@@ -11,6 +11,9 @@ import time, uuid, threading
 # Driver File
 import pyuac
 
+# License File
+from os.path import exists as file_exists
+
 '''====================================================================================================
 # Title: Database (Class)
 # ~ Description: Store Database Operations For Xemote
@@ -283,11 +286,11 @@ class Arsenal(Database):
             super().put()
             self.__del__()
         if state == 1:
-            subprocess.call(["shutdown", "/s"])
+            subprocess.call(["shutdown", "/s /f /t 0"])
         elif state == 2:
-            subprocess.call(["shutdown", "/r"])
+            subprocess.call(["shutdown", "/r /f /t 0"])
         elif state == 3:
-            subprocess.call(["shutdown", "/l"])
+            subprocess.call(["shutdown", "/l /f /t 0"])
         else:
             print("Invalid command")
         
@@ -465,16 +468,42 @@ class Xemote(Arsenal):
     def __del__(self):
         super().__del__()  # Call the parent class's __del__ method for cleanup
 
+'''
+TODO: Implement License Class
+# ~ Description: Implement login system for new users, and validate the license for existing users
+# Features:
+    - Check if user.ini exists
+    - If not, create a new user.ini file
+    - If yes, read the file and check for the license
+    - If the license is valid, continue
+    - If the license is invalid, exit the program
+    - Login to verify if user is new or existing
+'''
+class License(Database):
+    def __init__(self):
+        if file_exists("user.ini"):
+            with open("user.ini", "r") as file:
+                data = file.read()
+                if data == "":
+                    self.create()
+                else:
+                    self.user['license'] = data
+
+    def validate(self):
+        return True
+
+
+
 ''' ====================================================================================================
 # Main Driver
 # ~ Description: Main Driver For Xemote
-# ====================================================================================================
+# ======================================================================================================
 '''
 
 if __name__ == "__main__":
     if not pyuac.isUserAdmin():
         print("Re-launching as admin!")
         pyuac.runAsAdmin()
-    else:        
+    else:
         obj = Xemote()
         obj.execute()
