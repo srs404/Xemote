@@ -1,5 +1,6 @@
 # Xemote Remote Control [![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red.svg?&style=for-the-badge)](#)
 Xemote Remote Control or XRC was a concept project I came up with during my high school days in order to prevent laptop theft and add cool self device control features. However, always busy with studies and life to complete this. So, now it's just a fun project to work on from time to time.
+<img src="banner.jpg">
 
 ## Security:
 - AES-256-GCM:
