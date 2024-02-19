@@ -30,34 +30,29 @@ class Database
         return $this->conn;
     }
 
-    protected function get($id)
+    protected function get($uuid)
     {
         if ($this->conn == null) {
             $this->connect();
         }
 
-        $sql = "SELECT * FROM command_center WHERE user_id = :id";
-        $stmt = $this->getConnect()->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $sql = "SELECT * FROM command_center WHERE uuid = :id";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(':id', $uuid);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    protected function put($id, $command)
+    protected function put($uuid, $command)
     {
         if ($this->conn == null) {
             $this->connect();
         }
-        $sql = "UPDATE command_center SET command = :command WHERE user_id = :id";
-        $stmt = $this->getConnect()->prepare($sql);
+        $sql = "UPDATE command_center SET command = :command WHERE uuid = :id";
+        $stmt = $this->connect()->prepare($sql);
         $stmt->bindParam(':command', $command);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':id', $uuid);
         $stmt->execute();
-    }
-
-    protected function getConnect()
-    {
-        return $this->connect();
     }
 
     public function redirect($url)

