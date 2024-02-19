@@ -400,7 +400,17 @@ class Xemote(Arsenal):
             if self.user['command']['show_off'] == 1:
                 if self.user['Ongoing']['show_off'] == False:
                     self.user['Ongoing']['show_off'] = True
-                    # TODO: Implement show_off
+                    # Lock Device
+                    self.user['command']['blackout'] = 1
+                    time.sleep(2)
+                    # Start The Typewriter
+                    subprocess.run(["cmd.exe", "/c", "start /max matrix.exe"])
+                    subprocess.run(["powershell", "(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1,100)"])
+            if self.user['command']['show_off'] == 2:
+                if self.user['Ongoing']['show_off'] == True:
+                    # Unlock Device
+                    self.user['command']['blackout'] = 2
+                    subprocess.run(["cmd.exe", "/c", "taskkill /f /im matrix.exe"])
                     self.user['command']['show_off'] = 0
                     self.put()
                     self.user['Ongoing']['show_off'] = False
